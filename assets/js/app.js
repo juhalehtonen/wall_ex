@@ -19,30 +19,36 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 import socket from "./socket"
-let channel = socket.channel("room:lobby", {})
 
+let channel = socket.channel("room:lobby", {})
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
-
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
-function drawLine(from, to) {
-  // Send a message to draw a line to server
-  channel.push("draw", {line: [from, to]})
+function _drawLines(lines) {
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+
+    ctx.moveTo(line.from.x, line.from.y);
+    ctx.lineTo(line.to.x, line.to.y);
+    ctx.stroke();
+  }
 }
 
+function drawLines(lines) {
+  _drawLines(lines);
+
+  // If we send our canvasID, the server won't waste bandwidth sending
+  // us our own drawLines messages.
+  channel.push("draw", {lines: lines, canvas_id: window.canvasID});
+}
+
+// Draw whatever we receive
 channel.on("draw", payload => {
-  var from = payload.line[0];
-  var to = payload.line[1];
-
-  console.log(payload);
-
-  ctx.moveTo(from.x, from.y);
-  ctx.lineTo(to.x, to.y);
-  ctx.stroke();
+  _drawLines(payload.lines)
 })
 
 // ------------------------
@@ -51,23 +57,45 @@ channel.on("draw", payload => {
 
 var lastPoints = {};
 
-function moveTo(identifier, point) {
-  lastPoints[identifier] = point;
-}
-
-function lineTo(identifier, point) {
-  if (lastPoints[identifier]) {
-    drawLine(lastPoints[identifier], point);
+function moveToCoordinates(map) {
+  for (var identifier in map) {
+    if (map.hasOwnProperty(identifier)) {
+      var point = map[identifier];
+      lastPoints[identifier] = point;
+    }
   }
-  lastPoints[identifier] = point;
 }
 
-function getPos(client) {
+function lineToCoordinates(map) {
+  var lines = [];
+  for (var identifier in map) {
+    if (!map.hasOwnProperty(identifier))
+      continue;
+
+    var point = map[identifier];
+    if (lastPoints[identifier]) {
+      lines.push({from:lastPoints[identifier], to: point});
+    }
+    lastPoints[identifier] = point;
+  }
+  drawLines(lines);
+}
+
+function getCanvasCoordinates(map) {
   var rect = canvas.getBoundingClientRect();
-  return {
-    x: client.clientX - rect.left,
-    y: client.clientY - rect.top
-  };
+  var returnValue = {};
+
+  for (var identifier in map) {
+    if (!map.hasOwnProperty(identifier))
+      continue;
+
+    var client = map[identifier];
+    returnValue[identifier] = {
+      x: client.clientX - rect.left,
+      y: client.clientY - rect.top
+    };
+  }
+  return returnValue;
 }
 
 function haltEventBefore(handler) {
@@ -86,7 +114,7 @@ var mouseDown = false;
 
 canvas.addEventListener('mousedown', haltEventBefore(function(event) {
   mouseDown = true;
-  moveTo("mouse", getPos(event));
+  moveToCoordinates(getCanvasCoordinates({"mouse" : event}));
 }));
 
 // We need to be able to listen for mouse ups for the entire document
@@ -96,17 +124,17 @@ document.documentElement.addEventListener('mouseup', function(event) {
 
 canvas.addEventListener('mousemove', haltEventBefore(function(event) {
   if (!mouseDown) return;
-  lineTo("mouse", getPos(event));
+  lineToCoordinates(getCanvasCoordinates({"mouse" : event}));
 }));
 
 canvas.addEventListener('mouseleave', haltEventBefore(function(event) {
   if (!mouseDown) return;
-  lineTo("mouse", getPos(event));
+  lineToCoordinates(getCanvasCoordinates({"mouse" : event}));
 }));
 
 canvas.addEventListener('mouseenter', haltEventBefore(function(event) {
   if (!mouseDown) return;
-  moveTo("mouse", getPos(event));
+  moveToCoordinates(getCanvasCoordinates({"mouse" : event}));
 }));
 
 // ----------------
@@ -115,14 +143,16 @@ canvas.addEventListener('mouseenter', haltEventBefore(function(event) {
 
 function handleTouchesWith(func) {
   return haltEventBefore(function(event) {
+    var map = {};
     for (var i = 0; i < event.changedTouches.length; i++) {
       var touch = event.changedTouches[i];
-      func(touch.identifier, getPos(touch));
+      map[touch.identifier] = touch;
     }
+    func(getCanvasCoordinates(map));
   });
 };
 
-canvas.addEventListener('touchstart',  handleTouchesWith(moveTo));
-canvas.addEventListener('touchmove',   handleTouchesWith(lineTo));
-canvas.addEventListener('touchend',    handleTouchesWith(lineTo));
-canvas.addEventListener('touchcancel', handleTouchesWith(moveTo));
+canvas.addEventListener('touchstart',  handleTouchesWith(moveToCoordinates));
+canvas.addEventListener('touchmove',   handleTouchesWith(lineToCoordinates));
+canvas.addEventListener('touchend',    handleTouchesWith(lineToCoordinates));
+canvas.addEventListener('touchcancel', handleTouchesWith(moveToCoordinates));
