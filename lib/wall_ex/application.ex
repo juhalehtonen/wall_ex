@@ -11,7 +11,7 @@ defmodule WallEx.Application do
       # Start the endpoint when the application starts
       supervisor(WallExWeb.Endpoint, []),
       # Start your own worker by calling: WallEx.Worker.start_link(arg1, arg2, arg3)
-      # worker(WallEx.Worker, [arg1, arg2, arg3]),
+      worker(WallEx.Worker, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -60,6 +60,7 @@ function drawLines(lines) {
 
 // Draw whatever we receive
 channel.on("draw", payload => {
+  console.log(payload);
   _drawLines(payload.lines)
 })
 

@@ -1,10 +1,12 @@
 defmodule WallExWeb.RoomChannel do
   use Phoenix.Channel
+  alias WallEx.Storage
 
   # To intercept outgoing "draw" events
   intercept(["draw"])
 
   def join("room:lobby", _message, socket) do
+    send(self(), :after_join)
     {:ok, socket}
   end
 
@@ -12,7 +14,21 @@ defmodule WallExWeb.RoomChannel do
     {:error, %{reason: "unauthorized"}}
   end
 
-  def handle_in("draw", %{"canvas_id" => canvas_id, "lines" => lines}, socket) do
+  def handle_info(:after_join, socket) do
+    drawings = for [{_, item}] <- Storage.get_drawings(), do: item
+
+    for drawing <- drawings do
+      lines = drawing["lines"]
+      push(socket, "draw", %{lines: lines})
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_in("draw", %{"canvas_id" => canvas_id, "lines" => lines} = drawing, socket) do
+    IO.puts("Storing drawing..")
+    IO.inspect(drawing)
+    Storage.insert_drawing(drawing)
     broadcast!(socket, "draw", %{canvas_id: canvas_id, lines: lines})
     {:noreply, socket}
   end
