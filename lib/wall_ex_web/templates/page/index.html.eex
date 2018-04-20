@@ -1,0 +1,5 @@
+<div class="row">
+  <div class="col-lg-12">
+    <canvas id="canvas" width="900" height="600"></canvas>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+#canvas {
+  border: 1px solid #ccc;
+  margin: 0 auto;
+  display: block;
+  background: #fff;
+}
+
+body {
+  background: #f0f0f0;
+  padding: 2rem;
+}
+
+/* Phoenix flash messages */
+.alert:empty { display: none; }
