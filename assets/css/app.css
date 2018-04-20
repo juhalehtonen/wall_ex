@@ -1,8 +1,34 @@
 #canvas {
   border: 1px solid #ccc;
   margin: 0 auto;
-  display: block;
+  display: none;
   background: #fff;
+}
+
+#canvas.is-visible {
+  display: block;
+}
+
+#loader {
+  border: 1px solid #ccc;
+  margin: 0 auto;
+  display: block;
+  background: #ccc;
+  width: 900px;
+  height: 600px;
+  position: relative;
+}
+
+#loader::after {
+  content: "Loading.. If not done soon, maybe reload? D:";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#loader.is-invisible {
+  display: none;
 }
 
 body {

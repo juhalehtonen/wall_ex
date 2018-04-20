@@ -20,13 +20,25 @@ import "phoenix_html"
 
 import socket from "./socket"
 
+var canvas = document.getElementById("canvas");
+var loader = document.getElementById("loader");
+var ctx = canvas.getContext("2d");
+
+function displayCanvas() {
+  canvas.classList.add('is-visible');
+  loader.classList.add('is-invisible');
+}
+
 let channel = socket.channel("room:lobby", {})
 channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+  .receive("ok", resp => {
+    console.log("Joined successfully", resp)
+    displayCanvas();
+  })
+  .receive("error", resp => {
+    console.log("Unable to join", resp)
+  })
 
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
 
 function _drawLines(lines) {
   for (var i = 0; i < lines.length; i++) {
