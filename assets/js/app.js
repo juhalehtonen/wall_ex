@@ -22,12 +22,20 @@ import socket from "./socket"
 
 var canvas = document.getElementById("canvas");
 var loader = document.getElementById("loader");
+var clear = document.getElementById("clear");
 var ctx = canvas.getContext("2d");
 
 function displayCanvas() {
   canvas.classList.add('is-visible');
   loader.classList.add('is-invisible');
 }
+
+clear.onclick = function() {
+  channel.push("clear", {});
+  return false;
+};
+
+
 
 let channel = socket.channel("room:lobby", {})
 channel.join()
@@ -39,6 +47,12 @@ channel.join()
     console.log("Unable to join", resp)
   })
 
+
+// Clear local canvas when should claear t. server :)
+channel.on("clear", payload => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+})
 
 function _drawLines(lines) {
   for (var i = 0; i < lines.length; i++) {

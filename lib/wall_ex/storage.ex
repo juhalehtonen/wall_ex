@@ -8,10 +8,14 @@ defmodule WallEx.Storage do
     end
   end
 
+  def destroy do
+    :ets.delete_all_objects(@post_table)
+  end
+
   @doc """
   Given a drawing, insert it to ETS.
   """
-  def insert_drawing(%{"canvas_id" => canvas_id, "lines" => lines} = drawing) do
+  def insert_drawing(drawing) do
     :ets.insert_new(@post_table, {:rand.uniform(100_000_000_000), drawing})
   end
 

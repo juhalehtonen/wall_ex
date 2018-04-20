@@ -25,6 +25,12 @@ defmodule WallExWeb.RoomChannel do
     {:noreply, socket}
   end
 
+  def handle_in("clear", _payload, socket) do
+    Storage.destroy()
+    broadcast!(socket, "clear", %{})
+    {:noreply, socket}
+  end
+
   def handle_in("draw", %{"canvas_id" => canvas_id, "lines" => lines} = drawing, socket) do
     IO.puts("Storing drawing..")
     IO.inspect(drawing)

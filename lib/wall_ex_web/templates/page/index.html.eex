@@ -3,5 +3,6 @@
     <script>window.canvasID = <%= WallExWeb.UserSocket.canvas_id %></script>
     <div id="loader"></div>
     <canvas id="canvas" width="900" height="600"></canvas>
+    <button type="button" name="button" id="clear">Clear the wall</button>
   </div>
 </div>
