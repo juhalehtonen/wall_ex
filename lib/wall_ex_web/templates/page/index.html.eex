@@ -1,8 +1,7 @@
-<div class="row">
-  <div class="col-lg-12">
+<div class="container">
+    <h1>Wall-Ex &mdash; a multiplayer real-time drawing wall</h1>
     <script>window.canvasID = <%= WallExWeb.UserSocket.canvas_id %></script>
     <div id="loader"></div>
     <canvas id="canvas" width="900" height="600"></canvas>
     <button type="button" name="button" id="clear">Clear the wall</button>
-  </div>
 </div>

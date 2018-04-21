@@ -16,7 +16,7 @@ defmodule WallEx.Storage do
   Given a drawing, insert it to ETS.
   """
   def insert_drawing(drawing) do
-    :ets.insert_new(@post_table, {:rand.uniform(100_000_000_000), drawing})
+    :ets.insert_new(@post_table, {:rand.uniform(900_000_000_000), drawing})
   end
 
   @doc """

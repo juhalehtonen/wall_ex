@@ -31,28 +31,30 @@ function displayCanvas() {
 }
 
 clear.onclick = function() {
-  channel.push("clear", {});
+  if (window.confirm("Do you really want to clear the wall for everyone?")) { 
+      channel.push("clear", {});
+  }
   return false;
 };
 
 
 
-let channel = socket.channel("room:lobby", {})
+let channel = socket.channel("room:lobby", {});
 channel.join()
   .receive("ok", resp => {
-    console.log("Joined successfully", resp)
+      console.log("Joined successfully", resp);
     displayCanvas();
   })
   .receive("error", resp => {
-    console.log("Unable to join", resp)
-  })
+      console.log("Unable to join", resp);
+  });
 
 
 // Clear local canvas when should claear t. server :)
 channel.on("clear", payload => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
-})
+});
 
 function _drawLines(lines) {
   for (var i = 0; i < lines.length; i++) {
@@ -75,8 +77,8 @@ function drawLines(lines) {
 // Draw whatever we receive
 channel.on("draw", payload => {
   console.log(payload);
-  _drawLines(payload.lines)
-})
+    _drawLines(payload.lines);
+});
 
 // ------------------------
 //  General Input Tracking
@@ -130,7 +132,7 @@ function haltEventBefore(handler) {
     event.stopPropagation();
     event.preventDefault();
     handler(event);
-  }
+  };
 }
 
 // ----------------
