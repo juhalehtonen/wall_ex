@@ -27,8 +27,8 @@ def configure_url do
   app_name = System.get_env("HEROKU_APP_NAME")
 
   case String.contains?(app_name, "-pr-") do
-    false > "wallex" <> ".herokuapp.com"
-    ->(true, app_name <> ".herokuapp.com")
+    false -> "wallex.herokuapp.com"
+    true -> app_name <> ".herokuapp.com")
   end
 end
 
