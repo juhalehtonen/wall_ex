@@ -56,6 +56,10 @@ channel.on("clear", payload => {
   ctx.beginPath();
 });
 
+channel.on("load", payload => {
+    _drawLines(payload.lines);
+});
+
 function _drawLines(lines) {
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
@@ -76,7 +80,6 @@ function drawLines(lines) {
 
 // Draw whatever we receive
 channel.on("draw", payload => {
-  console.log(payload);
     _drawLines(payload.lines);
 });
 

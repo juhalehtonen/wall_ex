@@ -14,13 +14,13 @@ defmodule WallExWeb.RoomChannel do
     {:error, %{reason: "unauthorized"}}
   end
 
+  @doc """
+  Load existing drawings and send them to the joining client.
+  """
   def handle_info(:after_join, socket) do
     drawings = for [{_, item}] <- Storage.get_drawings(), do: item
-
-    for drawing <- drawings do
-      lines = drawing["lines"]
-      push(socket, "draw", %{lines: lines})
-    end
+    lines = Enum.map(drawings, fn drawing -> drawing["lines"] end) |> List.flatten()
+    push(socket, "load", %{lines: lines})
 
     {:noreply, socket}
   end
@@ -32,13 +32,14 @@ defmodule WallExWeb.RoomChannel do
   end
 
   def handle_in("draw", %{"canvas_id" => canvas_id, "lines" => lines} = drawing, socket) do
-    IO.puts("Storing drawing..")
-    IO.inspect(drawing)
     Storage.insert_drawing(drawing)
     broadcast!(socket, "draw", %{canvas_id: canvas_id, lines: lines})
     {:noreply, socket}
   end
 
+  @doc """
+  Intercept the outgoing draw event and filter it out if the receiver would be the sender.
+  """
   def handle_out("draw", %{canvas_id: canvas_id, lines: lines}, socket) do
     # Pages draw locally to their own canvas before sending out draw events so
     # we don't rebroadcast them the event they sent the server.
