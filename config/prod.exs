@@ -3,13 +3,12 @@ use Mix.Config
 configure_prod_url = fn ->
   app_name = System.get_env("HEROKU_APP_NAME")
 
-  if app_name != nil do
-    case String.contains?(app_name, "-pr-") do
-      false -> "wallex.herokuapp.com"
-      true -> app_name <> ".herokuapp.com"
-    end
+  # If app name has been set and it contains -pr, assume a preview app url.
+  # Otherwise just use our default URL for production.
+  if app_name != nil && String.contains?(app_name, "-pr-") do
+    app_name <> ".herokuapp.com"
   else
-    raise "HEROKU_APP_NAME not set?"
+    "wallex.herokuapp.com"
   end
 end
 
