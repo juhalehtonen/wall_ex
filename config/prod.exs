@@ -28,7 +28,7 @@ def configure_url do
 
   case String.contains?(app_name, "-pr-") do
     false -> "wallex.herokuapp.com"
-    true -> app_name <> ".herokuapp.com")
+    true -> app_name <> ".herokuapp.com"
   end
 end
 
