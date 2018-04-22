@@ -1,5 +1,14 @@
 use Mix.Config
 
+def configure_production_url do
+  app_name = System.get_env("HEROKU_APP_NAME")
+
+  case String.contains?(app_name, "-pr-") do
+    false -> "wallex.herokuapp.com"
+    true -> app_name <> ".herokuapp.com"
+  end
+end
+
 # For production, we often load configuration from external
 # sources, such as your system environment. For this reason,
 # you won't find the :http configuration below, but set inside
@@ -15,7 +24,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :wall_ex, WallExWeb.Endpoint,
   load_from_system_env: true,
-  url: [scheme: "https", host: WallEx.configure_production_url(), port: 443],
+  url: [scheme: "https", host: configure_production_url(), port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json",
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE")
