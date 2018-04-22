@@ -3,9 +3,13 @@ use Mix.Config
 configure_prod_url = fn ->
   app_name = System.get_env("HEROKU_APP_NAME")
 
-  case String.contains?(app_name, "-pr-") do
-    false -> "wallex.herokuapp.com"
-    true -> app_name <> ".herokuapp.com"
+  if app_name != nil do
+    case String.contains?(app_name, "-pr-") do
+      false -> "wallex.herokuapp.com"
+      true -> app_name <> ".herokuapp.com"
+    end
+  else
+    raise "HEROKU_APP_NAME not set?"
   end
 end
 
