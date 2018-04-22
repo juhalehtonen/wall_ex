@@ -1,6 +1,6 @@
 use Mix.Config
 
-def configure_production_url do
+configure_prod_url = fn ->
   app_name = System.get_env("HEROKU_APP_NAME")
 
   case String.contains?(app_name, "-pr-") do
