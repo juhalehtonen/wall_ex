@@ -5,7 +5,20 @@ defmodule WallExWeb.UserSocket do
   channel("room:*", WallExWeb.RoomChannel)
 
   ## Transports
-  transport(:websocket, Phoenix.Transports.WebSocket, timeout: 45_000)
+  transport(
+    :websocket,
+    Phoenix.Transports.WebSocket,
+    timeout: 45_000,
+    check_origin: [
+      "https://wallex.herokuapp.com",
+      "https://wallex-pr-1.herokuapp.com",
+      "https://wallex-pr-2.herokuapp.com",
+      "https://wallex-pr-3.herokuapp.com",
+      "https://wallex-pr-4.herokuapp.com",
+      "https://wallex-pr-5.herokuapp.com"
+    ]
+  )
+
   # transport :longpoll, Phoenix.Transports.LongPoll
 
   @doc """
