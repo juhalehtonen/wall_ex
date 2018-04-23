@@ -9,13 +9,25 @@ defmodule WallExWeb.UserSocket do
     :websocket,
     Phoenix.Transports.WebSocket,
     timeout: 45_000,
-    check_origin: generate_origins
+    check_origin: [
+      "https://wallex.herokuapp.com",
+      "https://wallex-pr-1.herokuapp.com",
+      "https://wallex-pr-2.herokuapp.com",
+      "https://wallex-pr-3.herokuapp.com",
+      "https://wallex-pr-4.herokuapp.com",
+      "https://wallex-pr-5.herokuapp.com",
+      "https://wallex-pr-6.herokuapp.com",
+      "https://wallex-pr-7.herokuapp.com",
+      "https://wallex-pr-8.herokuapp.com",
+      "https://wallex-pr-9.herokuapp.com",
+      "https://wallex-pr-10.herokuapp.com",
+      "https://wallex-pr-11.herokuapp.com",
+      "https://wallex-pr-12.herokuapp.com",
+      "https://wallex-pr-13.herokuapp.com",
+      "https://wallex-pr-14.herokuapp.com",
+      "https://wallex-pr-15.herokuapp.com"
+    ]
   )
-
-  generate_origins = fn ->
-    gens = Enum.map(1..100, fn num -> "https://wallex-pr-#{num}.herokuapp.com" end)
-    ["https://wallex.herokuapp.com" | gens]
-  end
 
   # transport :longpoll, Phoenix.Transports.LongPoll
 
