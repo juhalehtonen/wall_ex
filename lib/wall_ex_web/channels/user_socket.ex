@@ -27,7 +27,22 @@ defmodule WallExWeb.UserSocket do
       "https://wallex-pr-12.herokuapp.com",
       "https://wallex-pr-13.herokuapp.com",
       "https://wallex-pr-14.herokuapp.com",
-      "https://wallex-pr-15.herokuapp.com"
+      "https://wallex-pr-16.herokuapp.com",
+      "https://wallex-pr-17.herokuapp.com",
+      "https://wallex-pr-18.herokuapp.com",
+      "https://wallex-pr-19.herokuapp.com",
+      "https://wallex-pr-20.herokuapp.com",
+      "https://wallex-pr-21.herokuapp.com",
+      "https://wallex-pr-22.herokuapp.com",
+      "https://wallex-pr-23.herokuapp.com",
+      "https://wallex-pr-24.herokuapp.com",
+      "https://wallex-pr-25.herokuapp.com",
+      "https://wallex-pr-26.herokuapp.com",
+      "https://wallex-pr-27.herokuapp.com",
+      "https://wallex-pr-28.herokuapp.com",
+      "https://wallex-pr-29.herokuapp.com",
+      "https://wallex-pr-30.herokuapp.com",
+      "https://wallex-pr-31.herokuapp.com"
     ]
   )
 
