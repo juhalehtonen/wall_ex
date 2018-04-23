@@ -1,92 +1,9 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
-
-html {
-  box-sizing: border-box;
-  height: 100%;
-  text-rendering: optimizeLegibility;
-}
-html {
-  font-size: 1rem;
-}
-@media screen and (min-width: 20rem) {
-  html {
-    font-size: calc(1rem + 0.6 * ((100vw - 20rem) / 60));
-  }
-}
-@media screen and (min-width: 80rem) {
-  html {
-    font-size: 1.6rem;
-  }
-}
-
-body {
-  color: #212121;
-  font-family: "Helvetica Neue", "Calibri Light", Roboto, sans-serif;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6rem;
-}
-
-/**
- * ELEMENTS
- */
-p {
-  line-height: 1.6rem;
-  margin-bottom: 1.6rem;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-weight: 700;
-  margin-bottom: 1.6rem;
-}
-
-h1 {
-  font-size: 2.5rem;
-  line-height: 2.5rem;
-  margin-top: calc((1.6rem - 2.5rem) + 1.6rem);
-}
-
-h2 {
-  font-size: 2rem;
-  line-height: 2rem;
-  margin-top: calc((1.6rem - 2rem) + 1.6rem*2);
-}
-
-h3 {
-  font-size: 1.5rem;
-  line-height: 1.5rem;
-  margin-top: calc((1.6rem - 1.5rem) + 1.6rem*2);
-}
-
-h4 {
-  font-size: 1.25rem;
-  line-height: 1.25rem;
-  margin-top: calc((1.6rem - 1.25rem) + 1.6rem*2);
-}
-
-h5 {
-  font-size: 1rem;
-  line-height: 1rem;
-  margin-top: calc((1.6rem - 1rem) + 1.6rem*2);
-}
-
-h5 {
-  font-size: 0.875rem;
-  line-height: 0.875rem;
-  margin-top: calc((1.6rem - 0.875rem) + 1.6rem*2);
-}
-
 
 #canvas {
   border: 1px solid #ccc;
-  padding: 2rem;
   margin: 0 auto;
   display: none;
   background: #fff;
@@ -120,7 +37,7 @@ h5 {
 
 body {
   background: #f0f0f0;
-  padding: 1rem;
+  padding: 2rem;
 }
 
 /* Phoenix flash messages */
