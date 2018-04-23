@@ -10,6 +10,8 @@ defmodule WallExWeb.UserSocket do
     Phoenix.Transports.WebSocket,
     timeout: 45_000,
     check_origin: [
+      "//localhost",
+      "//127.0.0.1",
       "https://wallex.herokuapp.com",
       "https://wallex-pr-1.herokuapp.com",
       "https://wallex-pr-2.herokuapp.com",
