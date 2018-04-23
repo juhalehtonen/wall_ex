@@ -1,5 +1,17 @@
 use Mix.Config
 
+configure_prod_url = fn ->
+  app_name = System.get_env("HEROKU_APP_NAME")
+
+  # If app name has been set and it contains -pr, assume a preview app url.
+  # Otherwise just use our default URL for production.
+  if app_name != nil && String.contains?(app_name, "-pr-") do
+    app_name <> ".herokuapp.com"
+  else
+    "wallex.herokuapp.com"
+  end
+end
+
 # For production, we often load configuration from external
 # sources, such as your system environment. For this reason,
 # you won't find the :http configuration below, but set inside
@@ -15,10 +27,10 @@ use Mix.Config
 # which you typically run after static files are built.
 config :wall_ex, WallExWeb.Endpoint,
   load_from_system_env: true,
-  url: [scheme: "https", host: "wallex.herokuapp.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json",
-  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE")
+  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
+  check_origin: ["//wallex*.herokuapp.com"]
 
 # Do not print debug messages in production
 config :logger, level: :info
