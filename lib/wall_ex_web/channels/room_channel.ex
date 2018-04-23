@@ -10,6 +10,7 @@ defmodule WallExWeb.RoomChannel do
     {:ok, socket}
   end
 
+  @spec join(String.t(), struct(), struct()) :: {:error, map()}
   def join("room:" <> _private_room_id, _params, _socket) do
     {:error, %{reason: "unauthorized"}}
   end
@@ -38,11 +39,11 @@ defmodule WallExWeb.RoomChannel do
   end
 
   @doc """
-  Intercept the outgoing draw event and filter it out if the receiver would be the sender.
+  Intercept the outgoing draw event and filter it out if the receiver would be
+  the sender. Pages draw locally to their own canvas before sending out draw events
+  so we don't rebroadcast them the event they sent the server.
   """
   def handle_out("draw", %{canvas_id: canvas_id, lines: lines}, socket) do
-    # Pages draw locally to their own canvas before sending out draw events so
-    # we don't rebroadcast them the event they sent the server.
     if canvas_id === socket.assigns.canvas_id do
       {:noreply, socket}
     else
