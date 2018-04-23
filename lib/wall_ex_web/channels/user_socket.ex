@@ -9,10 +9,10 @@ defmodule WallExWeb.UserSocket do
     :websocket,
     Phoenix.Transports.WebSocket,
     timeout: 45_000,
-    check_origin: generate_origins()
+    check_origin: generate_origins
   )
 
-  def generate_origins do
+  generate_origins = fn ->
     gens = Enum.map(1..100, fn num -> "https://wallex-pr-#{num}.herokuapp.com" end)
     ["https://wallex.herokuapp.com" | gens]
   end
