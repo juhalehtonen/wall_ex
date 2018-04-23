@@ -12,12 +12,12 @@ html {
 }
 @media screen and (min-width: 20rem) {
   html {
-    font-size: calc(1rem + 0.6 * ((100vw - 20rem) / 60));
+    font-size: calc( 1rem + 0.2 * (( 100vw - 20rem ) / 60) );
   }
 }
 @media screen and (min-width: 80rem) {
   html {
-    font-size: 1.6rem;
+    font-size: 1.2rem;
   }
 }
 
@@ -48,21 +48,21 @@ h5 {
 }
 
 h1 {
-  font-size: 2.5rem;
-  line-height: 2.5rem;
-  margin-top: calc((1.6rem - 2.5rem) + 1.6rem);
+  font-size: 1.8rem;
+  line-height: 1.8rem;
+  margin-top: calc((1.6rem - 1.8rem) + 1.6rem);
 }
 
 h2 {
-  font-size: 2rem;
-  line-height: 2rem;
-  margin-top: calc((1.6rem - 2rem) + 1.6rem*2);
+  font-size: 1.6rem;
+  line-height: 1.6rem;
+  margin-top: calc((1.6rem - 1.6rem) + 1.6rem*2);
 }
 
 h3 {
-  font-size: 1.5rem;
-  line-height: 1.5rem;
-  margin-top: calc((1.6rem - 1.5rem) + 1.6rem*2);
+  font-size: 1.4rem;
+  line-height: 1.4rem;
+  margin-top: calc((1.6rem - 1.4rem) + 1.6rem*2);
 }
 
 h4 {
@@ -82,7 +82,6 @@ h5 {
   line-height: 0.875rem;
   margin-top: calc((1.6rem - 0.875rem) + 1.6rem*2);
 }
-
 
 #canvas {
   margin: 0 auto;
