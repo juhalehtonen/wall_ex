@@ -98,8 +98,8 @@ h5 {
   margin: 0 auto;
   display: block;
   background: #ccc;
-  width: 900px;
-  height: 600px;
+  width: 1280px;
+  height: 800px;
   position: relative;
 }
 
@@ -124,7 +124,7 @@ body {
 .alert:empty { display: none; }
 
 .container {
-    max-width: 900px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 10px;
 }
