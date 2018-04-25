@@ -2,7 +2,7 @@
     <h1>WallEx &mdash; a multiplayer real-time drawing wall</h1>
     <script>window.canvasID = <%= WallExWeb.UserSocket.canvas_id %></script>
     <div id="loader"></div>
-    <canvas id="canvas" width="900" height="600"></canvas>
+    <canvas id="canvas" width="1280" height="800"></canvas>
     <button type="button" name="button" id="clear">Clear the wall</button>
     <p>Use your mouse or finger to draw on the canvas above. Your drawing will be remembered, and synced in real-time with everyone else.</p>
 </div>
