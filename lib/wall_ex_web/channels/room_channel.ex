@@ -21,7 +21,12 @@ defmodule WallExWeb.RoomChannel do
   def handle_info(:after_join, socket) do
     drawings = for [{_, item}] <- Storage.get_drawings(), do: item
     lines = Enum.map(drawings, fn drawing -> drawing["lines"] end) |> List.flatten()
-    push(socket, "load", %{lines: lines})
+
+    # Go through `lines` and step through every 500 of them.
+    # Returns a list of lists, so we can enumerate through it to push.
+    batches = Enum.chunk_every(lines, 500)
+    # Push each batch to the client
+    Enum.each(batches, fn lines -> push(socket, "load", %{lines: lines}) end)
 
     {:noreply, socket}
   end
