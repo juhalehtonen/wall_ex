@@ -1,4 +1,5 @@
 exports.config = {
+  notifications: false,
   // See http://brunch.io/#documentation for docs.
   files: {
     javascripts: {
@@ -37,7 +38,7 @@ exports.config = {
   // Phoenix paths configuration
   paths: {
     // Dependencies and current project directories to watch
-    watched: ["static", "css", "js", "vendor"],
+    watched: ["static", "elm", "css", "js", "vendor"],
     // Where to compile files to
     public: "../priv/static"
   },
@@ -46,7 +47,14 @@ exports.config = {
   plugins: {
     babel: {
       // Do not use ES6 compiler in vendor code
-      ignore: [/vendor/]
+      ignore: [/vendor/, "js/elm.js"]
+    },
+    elmBrunch: {
+      elmFolder: "elm",
+      mainModules: ["src/Main.elm"],
+      outputFolder: "../js",
+      outputFile: "elm.js",
+      makeParameters: ["--warn"]
     }
   },
 

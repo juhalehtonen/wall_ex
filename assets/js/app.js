@@ -227,3 +227,11 @@ canvas.addEventListener('touchstart',  handleTouchesWith(moveToCoordinates));
 canvas.addEventListener('touchmove',   handleTouchesWith(lineToCoordinates));
 canvas.addEventListener('touchend',    handleTouchesWith(lineToCoordinates));
 canvas.addEventListener('touchcancel', handleTouchesWith(moveToCoordinates));
+
+
+/**
+ * Elm
+ */
+import Elm from "./elm"
+const elmDiv = document.getElementById("elm-main");
+Elm.Main.embed(elmDiv);
