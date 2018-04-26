@@ -10,6 +10,11 @@ defmodule WallExWeb.RoomChannelTest do
     {:ok, socket: socket}
   end
 
+  test "joining a 'private' room failes", %{socket: socket} do
+    assert {:error, %{reason: "unauthorized"}} =
+             subscribe_and_join(socket, RoomChannel, "room:accessdenied")
+  end
+
   test "`clear` broadcasts to room:lobby", %{socket: socket} do
     push(socket, "clear", %{})
     assert_broadcast("clear", %{})

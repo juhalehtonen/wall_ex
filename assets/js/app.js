@@ -25,13 +25,58 @@ var loader = document.getElementById("loader");
 var clear = document.getElementById("clear");
 var ctx = canvas.getContext("2d");
 
+let Colors = {};
+Colors.names = {
+    black: "#000000",
+    blue: "#0000ff",
+    brown: "#a52a2a",
+    darkblue: "#00008b",
+    darkcyan: "#008b8b",
+    darkgrey: "#a9a9a9",
+    darkgreen: "#006400",
+    darkkhaki: "#bdb76b",
+    darkmagenta: "#8b008b",
+    darkolivegreen: "#556b2f",
+    darkorange: "#ff8c00",
+    darkorchid: "#9932cc",
+    darkred: "#8b0000",
+    darksalmon: "#e9967a",
+    darkviolet: "#9400d3",
+    fuchsia: "#ff00ff",
+    gold: "#ffd700",
+    green: "#008000",
+    indigo: "#4b0082",
+    khaki: "#f0e68c",
+    lime: "#00ff00",
+    magenta: "#ff00ff",
+    maroon: "#800000",
+    navy: "#000080",
+    olive: "#808000",
+    orange: "#ffa500",
+    pink: "#ffc0cb",
+    purple: "#800080",
+    violet: "#800080",
+    red: "#ff0000",
+};
+
+Colors.random = function() {
+    var result;
+    var count = 0;
+    for (var prop in this.names)
+        if (Math.random() < 1/++count)
+           result = prop;
+    return result;
+};
+
+var userLineColor = Colors.random();
+
 function displayCanvas() {
   canvas.classList.add('is-visible');
   loader.classList.add('is-invisible');
 }
 
 clear.onclick = function() {
-  if (window.confirm("Do you really want to clear the wall for everyone?")) { 
+  if (window.confirm("Do you really want to clear the wall for everyone?")) {
       channel.push("clear", {});
   }
   return false;
@@ -64,8 +109,10 @@ function _drawLines(lines) {
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
 
+    ctx.beginPath();
     ctx.moveTo(line.from.x, line.from.y);
     ctx.lineTo(line.to.x, line.to.y);
+    ctx.strokeStyle = line.color;
     ctx.stroke();
   }
 }
@@ -83,10 +130,8 @@ channel.on("draw", payload => {
     _drawLines(payload.lines);
 });
 
-// ------------------------
-//  General Input Tracking
-// ------------------------
 
+//  General Input Tracking
 var lastPoints = {};
 
 function moveToCoordinates(map) {
@@ -106,7 +151,7 @@ function lineToCoordinates(map) {
 
     var point = map[identifier];
     if (lastPoints[identifier]) {
-      lines.push({from:lastPoints[identifier], to: point});
+      lines.push({from:lastPoints[identifier], to: point, color: userLineColor});
     }
     lastPoints[identifier] = point;
   }
@@ -138,10 +183,7 @@ function haltEventBefore(handler) {
   };
 }
 
-// ----------------
-//  Touch Handling
-// ----------------
-
+// Mouse Handling
 var mouseDown = false;
 
 canvas.addEventListener('mousedown', haltEventBefore(function(event) {
@@ -169,10 +211,7 @@ canvas.addEventListener('mouseenter', haltEventBefore(function(event) {
   moveToCoordinates(getCanvasCoordinates({"mouse" : event}));
 }));
 
-// ----------------
-//  Touch Handling
-// ----------------
-
+// Touch Handling
 function handleTouchesWith(func) {
   return haltEventBefore(function(event) {
     var map = {};
