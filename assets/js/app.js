@@ -18,6 +18,7 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
+/*
 import socket from "./socket"
 
 var canvas = document.getElementById("canvas");
@@ -228,7 +229,7 @@ canvas.addEventListener('touchmove',   handleTouchesWith(lineToCoordinates));
 canvas.addEventListener('touchend',    handleTouchesWith(lineToCoordinates));
 canvas.addEventListener('touchcancel', handleTouchesWith(moveToCoordinates));
 
-
+*/
 /**
  * Elm
  */
