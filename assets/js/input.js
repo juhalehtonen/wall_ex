@@ -14,7 +14,7 @@ const input = {
 
   lineToCoordinates(map) {
     let lineColor = window.userLineColor;
-    let lines = [];
+    var lines = [];
 
     for (var identifier in map) {
       if (!map.hasOwnProperty(identifier)) {
@@ -25,14 +25,18 @@ const input = {
 
       if (input.lastPoints[identifier]) {
         lines.push({
-          from:input.lastPoints[identifier],
-          to: point, color: lineColor
+          from: input.lastPoints[identifier],
+          to: point,
+          color: lineColor
         });
       }
 
       input.lines = lines;
       input.lastPoints[identifier] = point;
     }
+
+    // TODO: Move outside of global scope
+    window.drawLinesPub(input.lines);
   }
 
 }

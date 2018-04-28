@@ -74,7 +74,7 @@ canvas.clearEl.onclick = function() {
  * Calls out canvas.drawLines() for actually drawing the lines, but also pushes
  * the information to the channel to let others know.
  */
-function drawLinesPub(lines) {
+window.drawLinesPub = function (lines) {
   canvas.drawLines(lines);
 
   // If we send our canvasID, the server won't waste bandwidth sending
@@ -112,8 +112,6 @@ canvas.canvasEl.addEventListener('mousemove', haltEventBefore(function(event) {
   input.lineToCoordinates(
     canvas.getCanvasCoordinates({"mouse" : event})
   );
-
-  drawLinesPub(input.lines);
 }));
 
 canvas.canvasEl.addEventListener('mouseleave', haltEventBefore(function(event) {
@@ -122,8 +120,6 @@ canvas.canvasEl.addEventListener('mouseleave', haltEventBefore(function(event) {
   input.lineToCoordinates(
     canvas.getCanvasCoordinates({"mouse" : event})
   );
-
-  drawLinesPub(input.lines);
 }));
 
 canvas.canvasEl.addEventListener('mouseenter', haltEventBefore(function(event) {
@@ -132,8 +128,6 @@ canvas.canvasEl.addEventListener('mouseenter', haltEventBefore(function(event) {
   input.moveToCoordinates(
     canvas.getCanvasCoordinates({"mouse" : event})
   );
-
-  drawLinesPub(input.lines);
 }));
 
 
