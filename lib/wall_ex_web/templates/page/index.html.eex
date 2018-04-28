@@ -1,8 +1,7 @@
 <div class="container">
-    <script>window.canvasID = <%= WallExWeb.UserSocket.canvas_id %></script>
+    <span class="info">Drawing as: <span id="color"></span></span>
     <div id="loader"></div>
     <canvas id="canvas" width="1024" height="600"></canvas>
-    <span class="info">Drawing as: <span id="color"></span></span>
     <p>Use your mouse or finger to draw on the canvas above. Your drawing will be remembered, and synced in real-time with everyone else.</p>
     <p><strong>Note:</strong> this demo runs on free Heroku instances, and thus gets shut down if no activity takes place in 10 minutes. This kills the drawings.</p>
     <button type="button" name="button" id="clear">Clear the wall</button>

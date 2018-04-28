@@ -133,10 +133,17 @@ body {
   padding: 8px;
   display: inline-block;
   vertical-align: middle;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .info {
   font-size: 0.8rem;
   text-transform: uppercase;
   line-height: 1;
+  vertical-align: middle;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 5px;
 }
