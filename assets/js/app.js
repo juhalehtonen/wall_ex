@@ -19,116 +19,74 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 import socket from "./socket"
+import canvas from "./canvas"
+import pointer from "./pointer"
+canvas.init();
 
-var canvas = document.getElementById("canvas");
-var loader = document.getElementById("loader");
-var clear = document.getElementById("clear");
-var ctx = canvas.getContext("2d");
-
-let Colors = {};
-Colors.names = {
-    black: "#000000",
-    blue: "#0000ff",
-    brown: "#a52a2a",
-    darkblue: "#00008b",
-    darkcyan: "#008b8b",
-    darkgrey: "#a9a9a9",
-    darkgreen: "#006400",
-    darkkhaki: "#bdb76b",
-    darkmagenta: "#8b008b",
-    darkolivegreen: "#556b2f",
-    darkorange: "#ff8c00",
-    darkorchid: "#9932cc",
-    darkred: "#8b0000",
-    darksalmon: "#e9967a",
-    darkviolet: "#9400d3",
-    fuchsia: "#ff00ff",
-    gold: "#ffd700",
-    green: "#008000",
-    indigo: "#4b0082",
-    khaki: "#f0e68c",
-    lime: "#00ff00",
-    magenta: "#ff00ff",
-    maroon: "#800000",
-    navy: "#000080",
-    olive: "#808000",
-    orange: "#ffa500",
-    pink: "#ffc0cb",
-    purple: "#800080",
-    violet: "#800080",
-    red: "#ff0000",
-};
-
-Colors.random = function() {
-    var result;
-    var count = 0;
-    for (var prop in this.names)
-        if (Math.random() < 1/++count)
-           result = prop;
-    return result;
-};
-
-var userLineColor = Colors.random();
-
-function displayCanvas() {
-  canvas.classList.add('is-visible');
-  loader.classList.add('is-invisible');
-}
-
-clear.onclick = function() {
-  if (window.confirm("Do you really want to clear the wall for everyone?")) {
-      channel.push("clear", {});
-  }
-  return false;
-};
-
-
-
+/**
+ * Attempt to establish a connection to the channel, and display the canvas if
+ * successful.
+ */
 let channel = socket.channel("room:lobby", {});
 channel.join()
   .receive("ok", resp => {
       console.log("Joined successfully", resp);
-    displayCanvas();
+      canvas.displayCanvas();
   })
   .receive("error", resp => {
       console.log("Unable to join", resp);
   });
 
 
-// Clear local canvas when should claear t. server :)
+/**
+ * Clear canvas locally when server broadcasts the message to the client.
+ */
 channel.on("clear", payload => {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.beginPath();
+  canvas.clearCanvas();
 });
 
+/**
+ * Draw lines upon first page load. Can happen multiple times, as the server will
+ * batch messages to keep array sizes sane.
+ */
 channel.on("load", payload => {
-    _drawLines(payload.lines);
+    drawLines(payload.lines);
 });
 
-function _drawLines(lines) {
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
+// Draw whatever we receive
+channel.on("draw", payload => {
+    drawLines(payload.lines);
+});
 
-    ctx.beginPath();
-    ctx.moveTo(line.from.x, line.from.y);
-    ctx.lineTo(line.to.x, line.to.y);
-    ctx.strokeStyle = line.color;
-    ctx.stroke();
+
+canvas.clearEl.onclick = function() {
+  if (window.confirm("Do you really want to clear the wall for everyone?")) {
+      channel.push("clear", {});
   }
+  return false;
+};
+
+/**
+ * Draw out given lines on the canvas. Simply handles the painting and does not
+ * care about what happens on the channel.
+ TODO: drop this and just use canvas.drawlines directly.
+ */
+function drawLines(lines) {
+  canvas.drawLines(lines);
 }
 
-function drawLines(lines) {
-  _drawLines(lines);
+/**
+ * Calls out drawLines() for actually drawing the lines, but also pushes that
+ * information to the channel to let others know.
+ */
+function drawLinesPub(lines) {
+  drawLines(lines);
 
   // If we send our canvasID, the server won't waste bandwidth sending
   // us our own drawLines messages.
   channel.push("draw", {lines: lines, canvas_id: window.canvasID});
 }
 
-// Draw whatever we receive
-channel.on("draw", payload => {
-    _drawLines(payload.lines);
-});
 
 
 //  General Input Tracking
@@ -151,15 +109,15 @@ function lineToCoordinates(map) {
 
     var point = map[identifier];
     if (lastPoints[identifier]) {
-      lines.push({from:lastPoints[identifier], to: point, color: userLineColor});
+      lines.push({from:lastPoints[identifier], to: point, color: canvas.userLineColor});
     }
     lastPoints[identifier] = point;
   }
-  drawLines(lines);
+  drawLinesPub(lines);
 }
 
 function getCanvasCoordinates(map) {
-  var rect = canvas.getBoundingClientRect();
+  var rect = canvas.canvasEl.getBoundingClientRect();
   var returnValue = {};
 
   for (var identifier in map) {
@@ -183,31 +141,29 @@ function haltEventBefore(handler) {
   };
 }
 
-// Mouse Handling
-var mouseDown = false;
 
-canvas.addEventListener('mousedown', haltEventBefore(function(event) {
-  mouseDown = true;
+canvas.canvasEl.addEventListener('mousedown', haltEventBefore(function(event) {
+  pointer.mouseDown = true;
   moveToCoordinates(getCanvasCoordinates({"mouse" : event}));
 }));
 
 // We need to be able to listen for mouse ups for the entire document
 document.documentElement.addEventListener('mouseup', function(event) {
-  mouseDown = false;
+  pointer.mouseDown = false;
 });
 
-canvas.addEventListener('mousemove', haltEventBefore(function(event) {
-  if (!mouseDown) return;
+canvas.canvasEl.addEventListener('mousemove', haltEventBefore(function(event) {
+  if (!pointer.mouseDown) return;
   lineToCoordinates(getCanvasCoordinates({"mouse" : event}));
 }));
 
-canvas.addEventListener('mouseleave', haltEventBefore(function(event) {
-  if (!mouseDown) return;
+canvas.canvasEl.addEventListener('mouseleave', haltEventBefore(function(event) {
+  if (!pointer.mouseDown) return;
   lineToCoordinates(getCanvasCoordinates({"mouse" : event}));
 }));
 
-canvas.addEventListener('mouseenter', haltEventBefore(function(event) {
-  if (!mouseDown) return;
+canvas.canvasEl.addEventListener('mouseenter', haltEventBefore(function(event) {
+  if (!pointer.mouseDown) return;
   moveToCoordinates(getCanvasCoordinates({"mouse" : event}));
 }));
 
@@ -223,7 +179,7 @@ function handleTouchesWith(func) {
   });
 };
 
-canvas.addEventListener('touchstart',  handleTouchesWith(moveToCoordinates));
-canvas.addEventListener('touchmove',   handleTouchesWith(lineToCoordinates));
-canvas.addEventListener('touchend',    handleTouchesWith(lineToCoordinates));
-canvas.addEventListener('touchcancel', handleTouchesWith(moveToCoordinates));
+canvas.canvasEl.addEventListener('touchstart',  handleTouchesWith(moveToCoordinates));
+canvas.canvasEl.addEventListener('touchmove',   handleTouchesWith(lineToCoordinates));
+canvas.canvasEl.addEventListener('touchend',    handleTouchesWith(lineToCoordinates));
+canvas.canvasEl.addEventListener('touchcancel', handleTouchesWith(moveToCoordinates));
