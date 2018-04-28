@@ -87,7 +87,17 @@ function drawLinesPub(lines) {
  * Event listeners
  */
 
-canvas.canvasEl.addEventListener('mousedown', input.haltEventBefore(function(event) {
+
+// Touch Handling
+function haltEventBefore(handler) {
+ return function(event) {
+   event.stopPropagation();
+   event.preventDefault();
+   handler(event);
+ };
+}
+
+canvas.canvasEl.addEventListener('mousedown', haltEventBefore(function(event) {
   input.mouseDown = true;
   input.moveToCoordinates(canvas.getCanvasCoordinates({"mouse" : event}));
 }));
@@ -96,7 +106,7 @@ document.documentElement.addEventListener('mouseup', function(event) {
   input.mouseDown = false;
 });
 
-canvas.canvasEl.addEventListener('mousemove', input.haltEventBefore(function(event) {
+canvas.canvasEl.addEventListener('mousemove', haltEventBefore(function(event) {
   if (!input.mouseDown) return;
 
   input.lineToCoordinates(
@@ -106,7 +116,7 @@ canvas.canvasEl.addEventListener('mousemove', input.haltEventBefore(function(eve
   drawLinesPub(input.lines);
 }));
 
-canvas.canvasEl.addEventListener('mouseleave', input.haltEventBefore(function(event) {
+canvas.canvasEl.addEventListener('mouseleave', haltEventBefore(function(event) {
   if (!input.mouseDown) return;
 
   input.lineToCoordinates(
@@ -116,7 +126,7 @@ canvas.canvasEl.addEventListener('mouseleave', input.haltEventBefore(function(ev
   drawLinesPub(input.lines);
 }));
 
-canvas.canvasEl.addEventListener('mouseenter', input.haltEventBefore(function(event) {
+canvas.canvasEl.addEventListener('mouseenter', haltEventBefore(function(event) {
   if (!input.mouseDown) return;
 
   input.moveToCoordinates(
@@ -126,9 +136,9 @@ canvas.canvasEl.addEventListener('mouseenter', input.haltEventBefore(function(ev
   drawLinesPub(input.lines);
 }));
 
-// Touch Handling
+
 function handleTouchesWith(func) {
-  return input.haltEventBefore(function(event) {
+  return haltEventBefore(function(event) {
     var map = {};
     for (var i = 0; i < event.changedTouches.length; i++) {
       var touch = event.changedTouches[i];

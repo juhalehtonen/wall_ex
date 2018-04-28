@@ -33,14 +33,6 @@ const input = {
       input.lines = lines;
       input.lastPoints[identifier] = point;
     }
-  },
-
-  haltEventBefore(handler) {
-    return function(event) {
-      event.stopPropagation();
-      event.preventDefault();
-      handler(event);
-    };
   }
 
 }
