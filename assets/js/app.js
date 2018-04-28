@@ -52,12 +52,12 @@ channel.on("clear", payload => {
  * batch messages to keep array sizes sane.
  */
 channel.on("load", payload => {
-    drawLines(payload.lines);
+    canvas.drawLines(payload.lines);
 });
 
 // Draw whatever we receive
 channel.on("draw", payload => {
-    drawLines(payload.lines);
+    canvas.drawLines(payload.lines);
 });
 
 
@@ -68,21 +68,13 @@ canvas.clearEl.onclick = function() {
   return false;
 };
 
-/**
- * Draw out given lines on the canvas. Simply handles the painting and does not
- * care about what happens on the channel.
- TODO: drop this and just use canvas.drawlines directly.
- */
-function drawLines(lines) {
-  canvas.drawLines(lines);
-}
 
 /**
  * Calls out drawLines() for actually drawing the lines, but also pushes that
  * information to the channel to let others know.
  */
 function drawLinesPub(lines) {
-  drawLines(lines);
+  canvas.drawLines(lines);
 
   // If we send our canvasID, the server won't waste bandwidth sending
   // us our own drawLines messages.
