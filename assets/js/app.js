@@ -7,7 +7,7 @@
 // in vendor, which are never wrapped in imports and
 // therefore are always executed.
 
-// Import dependencies 
+// Import dependencies
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".

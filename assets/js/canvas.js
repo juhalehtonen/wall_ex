@@ -110,7 +110,7 @@ const canvas = {
       var count = 0;
       for (var prop in canvas.colors)
           if (Math.random() < 1/++count)
-             result = prop;
+             result = canvas.colors[prop];
       return result;
   }
 }
