@@ -23,6 +23,7 @@ import canvas from "./canvas";
 import input from "./input";
 
 canvas.init();
+window.userLineColor = canvas.userLineColor;
 
 
 /**
@@ -99,8 +100,7 @@ canvas.canvasEl.addEventListener('mousemove', input.haltEventBefore(function(eve
   if (!input.mouseDown) return;
 
   input.lineToCoordinates(
-    canvas.getCanvasCoordinates({"mouse" : event}),
-    canvas.userLineColor
+    canvas.getCanvasCoordinates({"mouse" : event})
   );
 
   drawLinesPub(input.lines);
@@ -110,8 +110,7 @@ canvas.canvasEl.addEventListener('mouseleave', input.haltEventBefore(function(ev
   if (!input.mouseDown) return;
 
   input.lineToCoordinates(
-    canvas.getCanvasCoordinates({"mouse" : event}),
-    canvas.userLineColor
+    canvas.getCanvasCoordinates({"mouse" : event})
   );
 
   drawLinesPub(input.lines);

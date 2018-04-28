@@ -12,8 +12,8 @@ const input = {
     }
   },
 
-  lineToCoordinates(map, color) {
-    let lineColor = color;
+  lineToCoordinates(map) {
+    let lineColor = window.userLineColor;
     let lines = [];
 
     for (var identifier in map) {
