@@ -11,17 +11,19 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "phoenix_html"
+import "phoenix_html";
 
 // Import local files
 //
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-import socket from "./socket"
-import canvas from "./canvas"
-import pointer from "./pointer"
+import socket from "./socket";
+import canvas from "./canvas";
+import input from "./input";
+
 canvas.init();
+
 
 /**
  * Attempt to establish a connection to the channel, and display the canvas if
@@ -88,51 +90,6 @@ function drawLinesPub(lines) {
 }
 
 
-
-//  General Input Tracking
-var lastPoints = {};
-
-function moveToCoordinates(map) {
-  for (var identifier in map) {
-    if (map.hasOwnProperty(identifier)) {
-      var point = map[identifier];
-      lastPoints[identifier] = point;
-    }
-  }
-}
-
-function lineToCoordinates(map) {
-  var lines = [];
-  for (var identifier in map) {
-    if (!map.hasOwnProperty(identifier))
-      continue;
-
-    var point = map[identifier];
-    if (lastPoints[identifier]) {
-      lines.push({from:lastPoints[identifier], to: point, color: canvas.userLineColor});
-    }
-    lastPoints[identifier] = point;
-  }
-  drawLinesPub(lines);
-}
-
-function getCanvasCoordinates(map) {
-  var rect = canvas.canvasEl.getBoundingClientRect();
-  var returnValue = {};
-
-  for (var identifier in map) {
-    if (!map.hasOwnProperty(identifier))
-      continue;
-
-    var client = map[identifier];
-    returnValue[identifier] = {
-      x: client.clientX - rect.left,
-      y: client.clientY - rect.top
-    };
-  }
-  return returnValue;
-}
-
 function haltEventBefore(handler) {
   return function(event) {
     event.stopPropagation();
@@ -143,28 +100,31 @@ function haltEventBefore(handler) {
 
 
 canvas.canvasEl.addEventListener('mousedown', haltEventBefore(function(event) {
-  pointer.mouseDown = true;
-  moveToCoordinates(getCanvasCoordinates({"mouse" : event}));
+  input.mouseDown = true;
+  input.moveToCoordinates(canvas.getCanvasCoordinates({"mouse" : event}));
 }));
 
 // We need to be able to listen for mouse ups for the entire document
 document.documentElement.addEventListener('mouseup', function(event) {
-  pointer.mouseDown = false;
+  input.mouseDown = false;
 });
 
 canvas.canvasEl.addEventListener('mousemove', haltEventBefore(function(event) {
-  if (!pointer.mouseDown) return;
-  lineToCoordinates(getCanvasCoordinates({"mouse" : event}));
+  if (!input.mouseDown) return;
+  input.lineToCoordinates(canvas.getCanvasCoordinates({"mouse" : event}), canvas.userLineColor);
+  drawLinesPub(input.lines);
 }));
 
 canvas.canvasEl.addEventListener('mouseleave', haltEventBefore(function(event) {
-  if (!pointer.mouseDown) return;
-  lineToCoordinates(getCanvasCoordinates({"mouse" : event}));
+  if (!input.mouseDown) return;
+  input.lineToCoordinates(canvas.getCanvasCoordinates({"mouse" : event}), canvas.userLineColor);
+  drawLinesPub(input.lines);
 }));
 
 canvas.canvasEl.addEventListener('mouseenter', haltEventBefore(function(event) {
-  if (!pointer.mouseDown) return;
-  moveToCoordinates(getCanvasCoordinates({"mouse" : event}));
+  if (!input.mouseDown) return;
+  input.moveToCoordinates(canvas.getCanvasCoordinates({"mouse" : event}));
+  drawLinesPub(input.lines);
 }));
 
 // Touch Handling
@@ -175,11 +135,11 @@ function handleTouchesWith(func) {
       var touch = event.changedTouches[i];
       map[touch.identifier] = touch;
     }
-    func(getCanvasCoordinates(map));
+    func(canvas.getCanvasCoordinates(map));
   });
 };
 
-canvas.canvasEl.addEventListener('touchstart',  handleTouchesWith(moveToCoordinates));
-canvas.canvasEl.addEventListener('touchmove',   handleTouchesWith(lineToCoordinates));
-canvas.canvasEl.addEventListener('touchend',    handleTouchesWith(lineToCoordinates));
-canvas.canvasEl.addEventListener('touchcancel', handleTouchesWith(moveToCoordinates));
+canvas.canvasEl.addEventListener('touchstart',  handleTouchesWith(input.moveToCoordinates));
+canvas.canvasEl.addEventListener('touchmove',   handleTouchesWith(input.lineToCoordinates));
+canvas.canvasEl.addEventListener('touchend',    handleTouchesWith(input.lineToCoordinates));
+canvas.canvasEl.addEventListener('touchcancel', handleTouchesWith(input.moveToCoordinates));

@@ -49,6 +49,23 @@ const canvas = {
     }
   },
 
+  getCanvasCoordinates(map) {
+    var rect = canvas.canvasEl.getBoundingClientRect();
+    var returnValue = {};
+
+    for (var identifier in map) {
+      if (!map.hasOwnProperty(identifier))
+        continue;
+
+      var client = map[identifier];
+      returnValue[identifier] = {
+        x: client.clientX - rect.left,
+        y: client.clientY - rect.top
+      };
+    }
+    return returnValue;
+  },
+
   // Store available colors
   colors: {
       black: "#000000",
