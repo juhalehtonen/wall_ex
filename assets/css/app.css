@@ -98,7 +98,7 @@ h5 {
   margin: 0 auto;
   display: block;
   background: #ccc;
-  width: 900px;
+  width: 1024px;
   height: 600px;
   position: relative;
 }
@@ -117,14 +117,14 @@ h5 {
 
 body {
   background: #f0f0f0;
-  padding: 2rem;
+  padding: 1rem 2rem;
 }
 
 /* Phoenix flash messages */
 .alert:empty { display: none; }
 
 .container {
-    max-width: 900px;
+    max-width: 1024px;
     margin: 0 auto;
     padding: 10px;
 }
