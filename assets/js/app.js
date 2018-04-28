@@ -70,8 +70,8 @@ canvas.clearEl.onclick = function() {
 
 
 /**
- * Calls out drawLines() for actually drawing the lines, but also pushes that
- * information to the channel to let others know.
+ * Calls out canvas.drawLines() for actually drawing the lines, but also pushes
+ * the information to the channel to let others know.
  */
 function drawLinesPub(lines) {
   canvas.drawLines(lines);
@@ -82,46 +82,54 @@ function drawLinesPub(lines) {
 }
 
 
-function haltEventBefore(handler) {
-  return function(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    handler(event);
-  };
-}
+/**
+ * Event listeners
+ */
 
-
-canvas.canvasEl.addEventListener('mousedown', haltEventBefore(function(event) {
+canvas.canvasEl.addEventListener('mousedown', input.haltEventBefore(function(event) {
   input.mouseDown = true;
   input.moveToCoordinates(canvas.getCanvasCoordinates({"mouse" : event}));
 }));
 
-// We need to be able to listen for mouse ups for the entire document
 document.documentElement.addEventListener('mouseup', function(event) {
   input.mouseDown = false;
 });
 
-canvas.canvasEl.addEventListener('mousemove', haltEventBefore(function(event) {
+canvas.canvasEl.addEventListener('mousemove', input.haltEventBefore(function(event) {
   if (!input.mouseDown) return;
-  input.lineToCoordinates(canvas.getCanvasCoordinates({"mouse" : event}), canvas.userLineColor);
+
+  input.lineToCoordinates(
+    canvas.getCanvasCoordinates({"mouse" : event}),
+    canvas.userLineColor
+  );
+
   drawLinesPub(input.lines);
 }));
 
-canvas.canvasEl.addEventListener('mouseleave', haltEventBefore(function(event) {
+canvas.canvasEl.addEventListener('mouseleave', input.haltEventBefore(function(event) {
   if (!input.mouseDown) return;
-  input.lineToCoordinates(canvas.getCanvasCoordinates({"mouse" : event}), canvas.userLineColor);
+
+  input.lineToCoordinates(
+    canvas.getCanvasCoordinates({"mouse" : event}),
+    canvas.userLineColor
+  );
+
   drawLinesPub(input.lines);
 }));
 
-canvas.canvasEl.addEventListener('mouseenter', haltEventBefore(function(event) {
+canvas.canvasEl.addEventListener('mouseenter', input.haltEventBefore(function(event) {
   if (!input.mouseDown) return;
-  input.moveToCoordinates(canvas.getCanvasCoordinates({"mouse" : event}));
+
+  input.moveToCoordinates(
+    canvas.getCanvasCoordinates({"mouse" : event})
+  );
+
   drawLinesPub(input.lines);
 }));
 
 // Touch Handling
 function handleTouchesWith(func) {
-  return haltEventBefore(function(event) {
+  return input.haltEventBefore(function(event) {
     var map = {};
     for (var i = 0; i < event.changedTouches.length; i++) {
       var touch = event.changedTouches[i];

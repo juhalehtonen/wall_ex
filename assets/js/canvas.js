@@ -5,11 +5,13 @@ const canvas = {
     this.captureEls();
     this.setContext();
     this.setUserLineColor();
+    this.showUserLineColor();
   },
 
   canvasEl: '',
   loaderEl: '',
   clearEl: '',
+  colorEl: '',
   ctx: '',
   userLineColor: '',
 
@@ -17,6 +19,7 @@ const canvas = {
       this.canvasEl = document.getElementById("canvas");
       this.loaderEl = document.getElementById("loader");
       this.clearEl = document.getElementById("clear");
+      this.colorEl = document.getElementById("color");
   },
 
   setContext() {
@@ -30,6 +33,10 @@ const canvas = {
 
   setUserLineColor() {
     this.userLineColor = this.getRandomColor();
+  },
+
+  showUserLineColor() {
+    this.colorEl.style.backgroundColor = this.userLineColor;
   },
 
   clearCanvas() {
@@ -94,8 +101,6 @@ const canvas = {
       navy: "#000080",
       olive: "#808000",
       orange: "#ffa500",
-      pink: "#ffc0cb",
-      purple: "#800080",
       violet: "#800080",
       red: "#ff0000",
   },

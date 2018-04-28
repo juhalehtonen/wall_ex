@@ -128,3 +128,15 @@ body {
     margin: 0 auto;
     padding: 10px;
 }
+
+#color {
+  padding: 8px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.info {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  line-height: 1;
+}
