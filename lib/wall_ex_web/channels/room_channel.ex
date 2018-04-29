@@ -31,12 +31,19 @@ defmodule WallExWeb.RoomChannel do
     {:noreply, socket}
   end
 
+  @doc """
+  Handle the `clear` messages by calling the Storage.destroy(), essentially deleting
+  all stored ETS data.
+  """
   def handle_in("clear", _payload, socket) do
     Storage.destroy()
     broadcast!(socket, "clear", %{})
     {:noreply, socket}
   end
 
+  @doc """
+  Handle draw messages by storing draws and broadcasting them onwards.
+  """
   def handle_in("draw", %{"canvas_id" => canvas_id, "lines" => lines} = drawing, socket) do
     Storage.insert_drawing(drawing)
     broadcast!(socket, "draw", %{canvas_id: canvas_id, lines: lines})
