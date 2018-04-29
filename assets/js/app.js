@@ -65,7 +65,7 @@ channel.on("draw", payload => {
 });
 
 canvas.clearEl.onclick = function() {
-  if (window.confirm("Do you really want to clear the wall for everyone?")) {
+  if (window.confirm("Do you really want to clear the wall for everyone? Everyone can still get a local copy from their browsers.")) {
       channel.push("clear", {});
   }
   return false;

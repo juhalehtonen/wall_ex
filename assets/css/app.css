@@ -27,15 +27,15 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6rem;
+  line-height: 1.3rem;
 }
 
 /**
  * ELEMENTS
  */
 p {
-  line-height: 1.6rem;
-  margin-bottom: 1.6rem;
+  line-height: 1.3rem;
+  margin-bottom: 1.3rem;
 }
 
 h1,
@@ -44,43 +44,43 @@ h3,
 h4,
 h5 {
   font-weight: 700;
-  margin-bottom: 1.6rem;
+  margin-bottom: 1.3rem;
 }
 
 h1 {
   font-size: 1.8rem;
   line-height: 1.8rem;
-  margin-top: calc((1.6rem - 1.8rem) + 1.6rem);
+  margin-top: calc((1.3rem - 1.8rem) + 1.3rem);
 }
 
 h2 {
-  font-size: 1.6rem;
-  line-height: 1.6rem;
-  margin-top: calc((1.6rem - 1.6rem) + 1.6rem*2);
+  font-size: 1.3rem;
+  line-height: 1.3rem;
+  margin-top: calc((1.3rem - 1.3rem) + 1.3rem*2);
 }
 
 h3 {
-  font-size: 1.4rem;
-  line-height: 1.4rem;
-  margin-top: calc((1.6rem - 1.4rem) + 1.6rem*2);
+  font-size: 1.3rem;
+  line-height: 1.3rem;
+  margin-top: calc((1.3rem - 1.3rem) + 1.3rem*2);
 }
 
 h4 {
   font-size: 1.25rem;
   line-height: 1.25rem;
-  margin-top: calc((1.6rem - 1.25rem) + 1.6rem*2);
+  margin-top: calc((1.3rem - 1.25rem) + 1.3rem*2);
 }
 
 h5 {
   font-size: 1rem;
   line-height: 1rem;
-  margin-top: calc((1.6rem - 1rem) + 1.6rem*2);
+  margin-top: calc((1.3rem - 1rem) + 1.3rem*2);
 }
 
 h5 {
   font-size: 0.875rem;
   line-height: 0.875rem;
-  margin-top: calc((1.6rem - 0.875rem) + 1.6rem*2);
+  margin-top: calc((1.3rem - 0.875rem) + 1.3rem*2);
 }
 
 #canvas {
@@ -117,7 +117,7 @@ h5 {
 
 body {
   background: #f0f0f0;
-  padding: 1rem 2rem;
+  padding: 0 2rem 2rem;
 }
 
 /* Phoenix flash messages */
@@ -126,7 +126,7 @@ body {
 .container {
     max-width: 1024px;
     margin: 0 auto;
-    padding: 10px;
+    padding: 0;
 }
 
 #color {
@@ -143,9 +143,9 @@ body {
   line-height: 1;
   vertical-align: middle;
   display: inline-block;
-  text-align: center;
   width: 100%;
-  margin-bottom: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 #images img {
@@ -155,4 +155,21 @@ body {
   max-width: 150px;
   width: 100%;
   height: auto;
+}
+
+#images img:hover {
+  border: 2px solid #ffeaa7;
+}
+
+.notification {
+  text-align: center;
+  width: 100%;
+  background: #ffeaa7;
+  padding: 2px;
+}
+
+.notification p {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
 }
