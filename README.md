@@ -1,12 +1,13 @@
 # WallEx
+[![Build Status](https://travis-ci.org/juhalehtonen/wall_ex.svg?branch=master)](https://travis-ci.org/juhalehtonen/wall_ex)
 
-A simple multi-user drawing canvas app.
+A simple multi-user drawing canvas built with Elixir & Phoenix.
+
+Uses websockets through Phoenix Channels to synchronize drawing in soft real-time amongst users, and stores drawings in ETS to serve existing drawings to new users.
 
 ## Deployment
 
-Deployment is done with Heroku (see `Procfile` and `app.json` for configuration).
-
-Each PR should create a review app automatically that can be used for verifying any changes before promoting them to staging or production.
+Deployment is done with Heroku (see `Procfile` and `app.json` for configuration). You'll also need to configure the URL in `config/prod.exs`.
 
 ## To start your Phoenix server:
 
@@ -15,3 +16,7 @@ Each PR should create a review app automatically that can be used for verifying 
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
+## License
+
+Licensed under GNU Affero General Public License v3.0. See LICENSE.md for details.
