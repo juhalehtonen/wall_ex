@@ -15,3 +15,7 @@ Deployment is done with Heroku (see `Procfile` and `app.json` for configuration)
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
+## License
+
+Licensed under GNU Affero General Public License v3.0. See LICENSE.md for details.
