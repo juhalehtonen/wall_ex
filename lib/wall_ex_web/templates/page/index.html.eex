@@ -1,8 +1,14 @@
 <div class="container">
-    <span class="info">Drawing as: <span id="color"></span></span>
-    <div id="loader"></div>
-    <canvas id="canvas" width="1024" height="600"></canvas>
-    <p>Use your mouse or finger to draw on the canvas above. Your drawing will be remembered, and synced in real-time with everyone else.</p>
-    <p><strong>Note:</strong> this demo runs on free Heroku instances, and thus gets shut down if no activity takes place in 10 minutes. This kills the drawings.</p>
-    <button type="button" name="button" id="clear">Clear the wall</button>
+  <div class="notification">
+    <p><strong>Note:</strong> this demo gets shut down if no activity takes place every 10 minutes. This kills the drawings.</p>
+  </div>
+
+  <div id="loader"></div>
+  <canvas id="canvas" width="1024" height="600"></canvas>
+  <span class="info">Drawing as: <span id="color"></span></span>
+  <button type="button" name="button" id="clear">Clear the wall</button>
+  <div id="images">
+    <h4>Cleared walls</h4>
+    <p>These are saved on your browser only, and will disappear on refresh.</p>
+  </div>
 </div>
