@@ -5,4 +5,8 @@
     <p>Use your mouse or finger to draw on the canvas above. Your drawing will be remembered, and synced in real-time with everyone else.</p>
     <p><strong>Note:</strong> this demo runs on free Heroku instances, and thus gets shut down if no activity takes place in 10 minutes. This kills the drawings.</p>
     <button type="button" name="button" id="clear">Clear the wall</button>
+    <div id="images">
+      <h4>Cleared walls</h4>
+      <p>Click to open in a new tab</p>
+    </div>
 </div>
