@@ -19,24 +19,34 @@ defmodule WallExWeb.RoomChannel do
   Load existing drawings and send them to the joining client.
   """
   def handle_info(:after_join, socket) do
-    drawings = for [{_, item}] <- Storage.get_drawings(), do: item
-    lines = Enum.map(drawings, fn drawing -> drawing end) |> List.flatten()
-
-    # Go through `lines` and step through every 500 of them.
-    # Returns a list of lists, so we can enumerate through it to push.
-    batches = Enum.chunk_every(lines, 500)
+    batches = get_drawings_from_storage()
     # Push each batch to the client
     Enum.each(batches, fn lines -> push(socket, "load", %{lines: lines}) end)
 
     {:noreply, socket}
   end
 
+  @doc """
+  Handle the clear event, deleting everything from the canvas.
+  """
   def handle_in("clear", _payload, socket) do
     Storage.destroy()
     broadcast!(socket, "clear", %{})
     {:noreply, socket}
   end
 
+  def handle_in("reload", _payload, socket) do
+    batches = get_drawings_from_storage()
+    # Push each batch to the client
+    Enum.each(batches, fn lines -> push(socket, "load", %{lines: lines}) end)
+
+    {:noreply, socket}
+  end
+
+  @doc """
+  Handle a draw event, storing the lines drawn to our storage alongside with a
+  timestamp that can be used to clear the canvas.
+  """
   def handle_in("draw", %{"canvas_id" => canvas_id, "lines" => lines}, socket) do
     timestamp = :os.system_time(:nano_seconds)
     Storage.insert_drawing(%{timestamp: timestamp, canvas_id: canvas_id, lines: lines})
@@ -56,5 +66,14 @@ defmodule WallExWeb.RoomChannel do
       push(socket, "draw", %{lines: lines})
       {:noreply, socket}
     end
+  end
+
+  defp get_drawings_from_storage do
+    drawings = for [{_, item}] <- Storage.get_drawings(), do: item
+    lines = Enum.map(drawings, fn drawing -> drawing end) |> List.flatten()
+
+    # Go through `lines` and step through every 500 of them.
+    # Returns a list of lists, so we can enumerate through it to push.
+    Enum.chunk_every(lines, 500)
   end
 end

@@ -64,6 +64,12 @@ channel.on("draw", payload => {
     canvas.drawLines(payload.lines);
 });
 
+// Draw whatever we receive
+channel.on("expire", payload => {
+  canvas.clearCanvas();
+  channel.push("reload", {});
+});
+
 canvas.clearEl.onclick = function() {
   if (window.confirm("Do you really want to clear the wall for everyone? Everyone can still get a local copy from their browsers.")) {
       channel.push("clear", {});

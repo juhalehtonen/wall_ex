@@ -21,16 +21,23 @@ defmodule WallEx.Worker do
   end
 
   @doc """
-  Clears expired drawings.
+  Clear expired drawings and set up a new round of expiration.
   """
   def handle_info(:expiration, state) do
     IO.puts("Clearing expired drawings...")
     Storage.delete_expiring()
+    IO.puts("Broadcasting expiration to clients...")
+    broadcast_expiration()
+    # Finally re-call the scheduling function to set up a new round of checking
     schedule_expiration()
     {:noreply, state}
   end
 
   defp schedule_expiration() do
     Process.send_after(self(), :expiration, @expiration_check_period)
+  end
+
+  defp broadcast_expiration do
+    WallExWeb.Endpoint.broadcast("room:lobby", "expire", %{})
   end
 end
