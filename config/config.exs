@@ -17,8 +17,13 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Storage expiration time in nanoseconds
+# Storage expiration time in nanoseconds. Nanoseconds are used because milliseconds
+# used as keys could still be duplicates when drawing things fast, so they would
+# be discared by ETS when trying to store them.
 config :wall_ex, storage_expiration_time: 10_000_000_000
+
+# How long to wait until each periodic check of expiring drawings. Uses milliseconds.
+config :wall_ex, storage_expiration_period: 5_000
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

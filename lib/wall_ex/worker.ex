@@ -5,6 +5,7 @@ defmodule WallEx.Worker do
   """
   use GenServer
   alias WallEx.Storage
+  @expiration_period Application.get_env(:wall_ex, :storage_expiration_period)
 
   def start_link(state \\ []) do
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
@@ -19,6 +20,9 @@ defmodule WallEx.Worker do
     {:ok, state}
   end
 
+  @doc """
+  Clears expired drawings.
+  """
   def handle_info(:expiration, state) do
     IO.puts("Clearing expired drawings...")
     Storage.delete_expiring()
@@ -27,6 +31,6 @@ defmodule WallEx.Worker do
   end
 
   defp schedule_expiration() do
-    Process.send_after(self(), :expiration, 5_000)
+    Process.send_after(self(), :expiration, @expiration_period)
   end
 end
