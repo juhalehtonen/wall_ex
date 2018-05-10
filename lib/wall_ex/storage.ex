@@ -1,6 +1,7 @@
 defmodule WallEx.Storage do
   import Ex2ms
   @drawings_table :wallex_drawings
+  @expiration_time Application.get_env(:wall_ex, :storage_expiration_time)
 
   @doc """
   Create ETS table if one does not already exist.
@@ -32,16 +33,17 @@ defmodule WallEx.Storage do
     )
   end
 
-  def get_expiring do
-    current_timestamp = :os.system_time(:nano_seconds)
+  @doc """
+  Gets and deletes all expiring objects from the ETS table. Expiration time is
+  defined in nanoseconds through the Application configuration.
+  """
+  def delete_expiring do
+    fun = expiration_match_spec()
+    objs = :ets.select(@drawings_table, fun)
 
-    f =
-      fun do
-        {{timestamp, _canvas_id}, lines} when timestamp + 10_000_000_000 < ^current_timestamp ->
-          lines
-      end
-
-    :ets.select(@drawings_table, f)
+    Enum.each(objs, fn obj ->
+      :ets.delete_object(@drawings_table, obj)
+    end)
   end
 
   @doc """
@@ -50,5 +52,16 @@ defmodule WallEx.Storage do
   @spec get_drawings() :: [any()]
   def get_drawings do
     :ets.match(@drawings_table, :"$1")
+  end
+
+  # Construct match specification for expiration checking
+  defp expiration_match_spec do
+    current_timestamp = :os.system_time(:nano_seconds)
+
+    fun do
+      {{timestamp, _canvas_id}, lines} = obj
+      when timestamp + ^@expiration_time < ^current_timestamp ->
+        obj
+    end
   end
 end
