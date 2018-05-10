@@ -23,7 +23,7 @@ config :logger, :console,
 config :wall_ex, storage_expiration_time: 10_000_000_000
 
 # How long to wait until each periodic check of expiring drawings. Uses milliseconds.
-config :wall_ex, storage_expiration_period: 5_000
+config :wall_ex, storage_expiration_check_period: 5_000
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

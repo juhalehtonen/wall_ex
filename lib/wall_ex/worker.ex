@@ -5,7 +5,7 @@ defmodule WallEx.Worker do
   """
   use GenServer
   alias WallEx.Storage
-  @expiration_period Application.get_env(:wall_ex, :storage_expiration_period)
+  @expiration_check_period Application.get_env(:wall_ex, :storage_expiration_check_period)
 
   def start_link(state \\ []) do
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
@@ -31,6 +31,6 @@ defmodule WallEx.Worker do
   end
 
   defp schedule_expiration() do
-    Process.send_after(self(), :expiration, @expiration_period)
+    Process.send_after(self(), :expiration, @expiration_check_period)
   end
 end
