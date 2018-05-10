@@ -19,11 +19,12 @@ config :logger, :console,
 
 # Storage expiration time in nanoseconds. Nanoseconds are used because milliseconds
 # used as keys could still be duplicates when drawing things fast, so they would
-# be discared by ETS when trying to store them.
-config :wall_ex, storage_expiration_time: 10_000_000_000
+# be discared by ETS when trying to store them. For reference, ten seconds in
+# nanoseconds would be 10_000_000_000.
+config :wall_ex, storage_expiration_time: 600_000_000_000
 
-# How long to wait until each periodic check of expiring drawings. Uses milliseconds.
-config :wall_ex, storage_expiration_check_period: 5_000
+# How long to wait in milliseconds until each periodic check of expiring drawings.
+config :wall_ex, storage_expiration_check_period: 30_000
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

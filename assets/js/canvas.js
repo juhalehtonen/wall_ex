@@ -10,7 +10,6 @@ const canvas = {
 
   canvasEl: '',
   loaderEl: '',
-  clearEl: '',
   colorEl: '',
   ctx: '',
   userLineColor: '',
@@ -18,7 +17,6 @@ const canvas = {
   captureEls() {
       this.canvasEl = document.getElementById("canvas");
       this.loaderEl = document.getElementById("loader");
-      this.clearEl = document.getElementById("clear");
       this.colorEl = document.getElementById("color");
   },
 
