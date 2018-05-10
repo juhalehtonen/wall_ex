@@ -20,7 +20,7 @@ defmodule WallExWeb.RoomChannel do
   """
   def handle_info(:after_join, socket) do
     drawings = for [{_, item}] <- Storage.get_drawings(), do: item
-    lines = Enum.map(drawings, fn drawing -> drawing["lines"] end) |> List.flatten()
+    lines = Enum.map(drawings, fn drawing -> drawing end) |> List.flatten()
 
     # Go through `lines` and step through every 500 of them.
     # Returns a list of lists, so we can enumerate through it to push.
@@ -37,8 +37,9 @@ defmodule WallExWeb.RoomChannel do
     {:noreply, socket}
   end
 
-  def handle_in("draw", %{"canvas_id" => canvas_id, "lines" => lines} = drawing, socket) do
-    Storage.insert_drawing(drawing)
+  def handle_in("draw", %{"canvas_id" => canvas_id, "lines" => lines}, socket) do
+    timestamp = :os.system_time(:nano_seconds)
+    Storage.insert_drawing(%{timestamp: timestamp, canvas_id: canvas_id, lines: lines})
     broadcast!(socket, "draw", %{canvas_id: canvas_id, lines: lines})
     {:noreply, socket}
   end

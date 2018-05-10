@@ -22,10 +22,14 @@ defmodule WallEx.Storage do
 
   @doc """
   Given a drawing, insert it to ETS.
+  Sample of a drawing:
+  %{key: %{canvas_id: canvas_id, timestamp: timestamp},
+    lines: lines
+  }
   """
   @spec insert_drawing(map()) :: boolean()
   def insert_drawing(drawing) do
-    :ets.insert_new(@post_table, {:rand.uniform(900_000_000_000), drawing})
+    :ets.insert_new(@post_table, {{drawing.timestamp, drawing.canvas_id}, drawing.lines})
   end
 
   @doc """
