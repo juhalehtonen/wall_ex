@@ -1,5 +1,6 @@
 defmodule WallEx.Storage do
-  @post_table :wallex_drawings
+  import Ex2ms
+  @drawings_table :wallex_drawings
 
   @doc """
   Create ETS table if one does not already exist.
@@ -7,8 +8,8 @@ defmodule WallEx.Storage do
   """
   @spec init() :: atom() | :ets.tid()
   def init do
-    if :ets.info(@post_table) == :undefined do
-      :ets.new(@post_table, [:named_table, :duplicate_bag, :public, read_concurrency: true])
+    if :ets.info(@drawings_table) == :undefined do
+      :ets.new(@drawings_table, [:named_table, :duplicate_bag, :public, read_concurrency: true])
     end
   end
 
@@ -17,19 +18,30 @@ defmodule WallEx.Storage do
   """
   @spec destroy() :: true
   def destroy do
-    :ets.delete_all_objects(@post_table)
+    :ets.delete_all_objects(@drawings_table)
   end
 
   @doc """
   Given a drawing, insert it to ETS.
-  Sample of a drawing:
-  %{key: %{canvas_id: canvas_id, timestamp: timestamp},
-    lines: lines
-  }
   """
   @spec insert_drawing(map()) :: boolean()
   def insert_drawing(drawing) do
-    :ets.insert_new(@post_table, {{drawing.timestamp, drawing.canvas_id}, drawing.lines})
+    :ets.insert_new(
+      @drawings_table,
+      {{drawing.timestamp, drawing.canvas_id}, drawing.lines}
+    )
+  end
+
+  def get_expiring do
+    current_timestamp = :os.system_time(:nano_seconds)
+
+    f =
+      fun do
+        {{timestamp, _canvas_id}, lines} when timestamp + 10_000_000_000 < ^current_timestamp ->
+          lines
+      end
+
+    :ets.select(@drawings_table, f)
   end
 
   @doc """
@@ -37,6 +49,6 @@ defmodule WallEx.Storage do
   """
   @spec get_drawings() :: [any()]
   def get_drawings do
-    :ets.match(@post_table, :"$1")
+    :ets.match(@drawings_table, :"$1")
   end
 end

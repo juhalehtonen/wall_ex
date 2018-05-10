@@ -39,7 +39,8 @@ defmodule WallEx.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:dialyxir, "~> 0.5.1", only: [:dev], runtime: false}
+      {:dialyxir, "~> 0.5.1", only: [:dev], runtime: false},
+      {:ex2ms, "~> 1.5"}
     ]
   end
 end
