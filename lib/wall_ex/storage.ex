@@ -36,12 +36,16 @@ defmodule WallEx.Storage do
   @doc """
   Gets and deletes all expiring objects from the ETS table. Expiration time is
   defined in nanoseconds through the Application configuration.
+
+  Returns a list of `true` for each deleted drawing. An empty list therefore
+  indicates that no drawings were expired and deleted.
   """
+  @spec delete_expiring() :: [] | [true]
   def delete_expiring do
     fun = expiration_match_spec()
     objs = :ets.select(@drawings_table, fun)
 
-    Enum.each(objs, fn obj ->
+    Enum.map(objs, fn obj ->
       :ets.delete_object(@drawings_table, obj)
     end)
   end

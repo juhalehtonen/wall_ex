@@ -21,13 +21,20 @@ defmodule WallEx.Worker do
   end
 
   @doc """
-  Clear expired drawings and set up a new round of expiration.
+  Clear expired drawings and set up a new round of expiration. Only broadcasts
+  an expiration to clients if something was expired. In other words, if the
+  Storage.delete_expiring/0 returns an empty list, do not bother updating the
+  clients about this.
   """
   def handle_info(:expiration, state) do
-    IO.puts("Clearing expired drawings...")
-    Storage.delete_expiring()
-    IO.puts("Broadcasting expiration to clients...")
-    broadcast_expiration()
+    case Storage.delete_expiring() do
+      [] ->
+        :ok
+
+      _ ->
+        broadcast_expiration()
+    end
+
     # Finally re-call the scheduling function to set up a new round of checking
     schedule_expiration()
     {:noreply, state}
