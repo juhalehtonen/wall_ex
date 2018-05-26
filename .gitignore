@@ -28,3 +28,5 @@ npm-debug.log
 
 # Ignore elixir language server
 .elixir_ls
+# Ignore IntelliJ IDEA files
+.idea
