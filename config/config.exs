@@ -21,7 +21,7 @@ config :logger, :console,
 # used as keys could still be duplicates when drawing things fast, so they would
 # be discared by ETS when trying to store them. For reference, ten seconds in
 # nanoseconds would be 10_000_000_000.
-config :wall_ex, storage_expiration_time: 600_000_000_000
+config :wall_ex, storage_expiration_time: 6_000_000_000_000
 
 # How long to wait in milliseconds until each periodic check of expiring drawings.
 config :wall_ex, storage_expiration_check_period: 60_000
