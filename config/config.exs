@@ -17,6 +17,9 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
+
 # Storage expiration time in nanoseconds. Nanoseconds are used because milliseconds
 # used as keys could still be duplicates when drawing things fast, so they would
 # be discared by ETS when trying to store them. For reference, ten seconds in
@@ -25,6 +28,9 @@ config :wall_ex, storage_expiration_time: 6_000_000_000_000
 
 # How long to wait in milliseconds until each periodic check of expiring drawings.
 config :wall_ex, storage_expiration_check_period: 60_000
+
+config :wall_ex, WallExWeb.Endpoint,
+  live_view: [signing_salt: "dnRdjNUzr7gTaubh+d5WSZ5BwAawhiSi"]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
