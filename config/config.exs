@@ -10,12 +10,16 @@ config :wall_ex, WallExWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "h1mGOQAgBr07j2+rSP0P4WQEhFWPn+3XbWEkaMgBTbTbSLL1ln8fvjyiTaDszWtY",
   render_errors: [view: WallExWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: WallEx.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: WallEx.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [signing_salt: "dnRdjNUzr7gTaubh+d5WSZ5BwAawhiSi"]
 
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
+
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
 
 # Storage expiration time in nanoseconds. Nanoseconds are used because milliseconds
 # used as keys could still be duplicates when drawing things fast, so they would

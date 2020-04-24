@@ -1,5 +1,6 @@
 defmodule WallExWeb.Router do
   use WallExWeb, :router
+  import Phoenix.LiveDashboard.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -17,6 +18,7 @@ defmodule WallExWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    live_dashboard "/dashboard"
   end
 
   # Other scopes may use custom stacks.

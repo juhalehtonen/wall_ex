@@ -1,7 +1,91 @@
 defmodule WallExWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :wall_ex
 
-  socket "/socket", WallExWeb.UserSocket
+  @session_options [
+    store: :cookie,
+    key: "_wall_ex_key",
+    signing_salt: "G2j1CDr3"
+  ]
+
+  socket "/live", Phoenix.LiveView.Socket,
+    websocket: [
+      connect_info: [session: @session_options],
+      check_origin: [
+      "//localhost",
+      "//127.0.0.1",
+      "https://wallex.herokuapp.com",
+      "https://wallex-pr-1.herokuapp.com",
+      "https://wallex-pr-2.herokuapp.com",
+      "https://wallex-pr-3.herokuapp.com",
+      "https://wallex-pr-4.herokuapp.com",
+      "https://wallex-pr-5.herokuapp.com",
+      "https://wallex-pr-6.herokuapp.com",
+      "https://wallex-pr-7.herokuapp.com",
+      "https://wallex-pr-8.herokuapp.com",
+      "https://wallex-pr-9.herokuapp.com",
+      "https://wallex-pr-10.herokuapp.com",
+      "https://wallex-pr-11.herokuapp.com",
+      "https://wallex-pr-12.herokuapp.com",
+      "https://wallex-pr-13.herokuapp.com",
+      "https://wallex-pr-14.herokuapp.com",
+      "https://wallex-pr-16.herokuapp.com",
+      "https://wallex-pr-17.herokuapp.com",
+      "https://wallex-pr-18.herokuapp.com",
+      "https://wallex-pr-19.herokuapp.com",
+      "https://wallex-pr-20.herokuapp.com",
+      "https://wallex-pr-21.herokuapp.com",
+      "https://wallex-pr-22.herokuapp.com",
+      "https://wallex-pr-23.herokuapp.com",
+      "https://wallex-pr-24.herokuapp.com",
+      "https://wallex-pr-25.herokuapp.com",
+      "https://wallex-pr-26.herokuapp.com",
+      "https://wallex-pr-27.herokuapp.com",
+      "https://wallex-pr-28.herokuapp.com",
+      "https://wallex-pr-29.herokuapp.com",
+      "https://wallex-pr-30.herokuapp.com",
+      "https://wallex-pr-31.herokuapp.com"
+      ]
+    ]
+
+  socket "/socket", WallExWeb.UserSocket,
+  websocket: [
+    timeout: 45_000,
+    check_origin: [
+      "//localhost",
+      "//127.0.0.1",
+      "https://wallex.herokuapp.com",
+      "https://wallex-pr-1.herokuapp.com",
+      "https://wallex-pr-2.herokuapp.com",
+      "https://wallex-pr-3.herokuapp.com",
+      "https://wallex-pr-4.herokuapp.com",
+      "https://wallex-pr-5.herokuapp.com",
+      "https://wallex-pr-6.herokuapp.com",
+      "https://wallex-pr-7.herokuapp.com",
+      "https://wallex-pr-8.herokuapp.com",
+      "https://wallex-pr-9.herokuapp.com",
+      "https://wallex-pr-10.herokuapp.com",
+      "https://wallex-pr-11.herokuapp.com",
+      "https://wallex-pr-12.herokuapp.com",
+      "https://wallex-pr-13.herokuapp.com",
+      "https://wallex-pr-14.herokuapp.com",
+      "https://wallex-pr-16.herokuapp.com",
+      "https://wallex-pr-17.herokuapp.com",
+      "https://wallex-pr-18.herokuapp.com",
+      "https://wallex-pr-19.herokuapp.com",
+      "https://wallex-pr-20.herokuapp.com",
+      "https://wallex-pr-21.herokuapp.com",
+      "https://wallex-pr-22.herokuapp.com",
+      "https://wallex-pr-23.herokuapp.com",
+      "https://wallex-pr-24.herokuapp.com",
+      "https://wallex-pr-25.herokuapp.com",
+      "https://wallex-pr-26.herokuapp.com",
+      "https://wallex-pr-27.herokuapp.com",
+      "https://wallex-pr-28.herokuapp.com",
+      "https://wallex-pr-29.herokuapp.com",
+      "https://wallex-pr-30.herokuapp.com",
+      "https://wallex-pr-31.herokuapp.com"
+    ]
+  ]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -19,13 +103,17 @@ defmodule WallExWeb.Endpoint do
     plug Phoenix.CodeReloader
   end
 
+  plug Phoenix.LiveDashboard.RequestLogger,
+    param_key: "request_logger",
+    cookie_key: "request_logger"
+
   plug Plug.RequestId
   plug Plug.Logger
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    json_decoder: Poison
+    json_decoder: Jason
 
   plug Plug.MethodOverride
   plug Plug.Head
