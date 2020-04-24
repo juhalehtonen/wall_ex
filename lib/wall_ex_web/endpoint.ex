@@ -8,7 +8,44 @@ defmodule WallExWeb.Endpoint do
   ]
 
   socket "/live", Phoenix.LiveView.Socket,
-    websocket: [connect_info: [session: @session_options]]
+    websocket: [
+      connect_info: [session: @session_options],
+      check_origin: [
+      "//localhost",
+      "//127.0.0.1",
+      "https://wallex.herokuapp.com",
+      "https://wallex-pr-1.herokuapp.com",
+      "https://wallex-pr-2.herokuapp.com",
+      "https://wallex-pr-3.herokuapp.com",
+      "https://wallex-pr-4.herokuapp.com",
+      "https://wallex-pr-5.herokuapp.com",
+      "https://wallex-pr-6.herokuapp.com",
+      "https://wallex-pr-7.herokuapp.com",
+      "https://wallex-pr-8.herokuapp.com",
+      "https://wallex-pr-9.herokuapp.com",
+      "https://wallex-pr-10.herokuapp.com",
+      "https://wallex-pr-11.herokuapp.com",
+      "https://wallex-pr-12.herokuapp.com",
+      "https://wallex-pr-13.herokuapp.com",
+      "https://wallex-pr-14.herokuapp.com",
+      "https://wallex-pr-16.herokuapp.com",
+      "https://wallex-pr-17.herokuapp.com",
+      "https://wallex-pr-18.herokuapp.com",
+      "https://wallex-pr-19.herokuapp.com",
+      "https://wallex-pr-20.herokuapp.com",
+      "https://wallex-pr-21.herokuapp.com",
+      "https://wallex-pr-22.herokuapp.com",
+      "https://wallex-pr-23.herokuapp.com",
+      "https://wallex-pr-24.herokuapp.com",
+      "https://wallex-pr-25.herokuapp.com",
+      "https://wallex-pr-26.herokuapp.com",
+      "https://wallex-pr-27.herokuapp.com",
+      "https://wallex-pr-28.herokuapp.com",
+      "https://wallex-pr-29.herokuapp.com",
+      "https://wallex-pr-30.herokuapp.com",
+      "https://wallex-pr-31.herokuapp.com"
+      ]
+    ]
 
   socket "/socket", WallExWeb.UserSocket,
   websocket: [
