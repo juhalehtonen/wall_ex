@@ -10,7 +10,8 @@ config :wall_ex, WallExWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "h1mGOQAgBr07j2+rSP0P4WQEhFWPn+3XbWEkaMgBTbTbSLL1ln8fvjyiTaDszWtY",
   render_errors: [view: WallExWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: WallEx.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: WallEx.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [signing_salt: "dnRdjNUzr7gTaubh+d5WSZ5BwAawhiSi"]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -28,9 +29,6 @@ config :wall_ex, storage_expiration_time: 6_000_000_000_000
 
 # How long to wait in milliseconds until each periodic check of expiring drawings.
 config :wall_ex, storage_expiration_check_period: 60_000
-
-config :wall_ex, WallExWeb.Endpoint,
-  live_view: [signing_salt: "dnRdjNUzr7gTaubh+d5WSZ5BwAawhiSi"]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

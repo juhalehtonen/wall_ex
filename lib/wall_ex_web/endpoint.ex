@@ -1,6 +1,15 @@
 defmodule WallExWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :wall_ex
 
+  @session_options [
+    store: :cookie,
+    key: "_wall_ex_key",
+    signing_salt: "G2j1CDr3"
+  ]
+
+  socket "/live", Phoenix.LiveView.Socket,
+    websocket: [connect_info: [session: @session_options]]
+
   socket "/socket", WallExWeb.UserSocket,
   websocket: [
     timeout: 45_000,
