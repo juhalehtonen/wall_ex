@@ -20,7 +20,7 @@ defmodule WallEx.Mixfile do
   def application do
     [
       mod: {WallEx.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
