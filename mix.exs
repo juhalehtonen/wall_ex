@@ -36,7 +36,7 @@ defmodule WallEx.Mixfile do
       {:phoenix, "~> 1.4.16"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_html, "~> 2.14.1"},
-      {:phoenix_live_dashboard, "~> 0.2"},
+      {:phoenix_live_dashboard, "~> 0.2.1"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:plug_cowboy, "~> 2.0"},
