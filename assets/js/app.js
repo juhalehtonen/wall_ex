@@ -70,6 +70,14 @@ channel.on("expire", payload => {
   channel.push("reload", {});
 });
 
+// Clear elements on click
+canvas.clearEl.onclick = function() {
+  if (window.confirm("Do you really want to clear the wall for everyone? Everyone can still get a local copy from their browsers.")) {
+      channel.push("clear", {});
+  }
+  return false;
+};
+
 /**
  * Calls out canvas.drawLines() for actually drawing the lines, but also pushes
  * the information to the channel to let others know.

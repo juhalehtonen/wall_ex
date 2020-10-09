@@ -7,4 +7,10 @@
   <canvas id="canvas" width="1024" height="600"></canvas>
   <span class="info">Drawing as: <span id="color"></span></span>
   <p>All drawings will last for <%= get_expiration_time() %> minutes before expiring.</p>
+
+  <button type="button" name="button" id="clear">Clear the wall</button>
+  <div id="images">
+    <h4>Cleared walls</h4>
+    <p>These are saved on your browser only, and will disappear on refresh.</p>
+  </div>
 </div>

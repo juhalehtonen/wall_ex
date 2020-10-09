@@ -10,6 +10,7 @@ const canvas = {
 
   canvasEl: '',
   loaderEl: '',
+  clearEl: '',
   colorEl: '',
   ctx: '',
   userLineColor: '',
@@ -18,6 +19,7 @@ const canvas = {
       this.canvasEl = document.getElementById("canvas");
       this.loaderEl = document.getElementById("loader");
       this.colorEl = document.getElementById("color");
+      this.clearEl = document.getElementById("clear");
   },
 
   setContext() {
