@@ -8,8 +8,10 @@ defmodule WallEx.Application do
 
     # Define workers and child supervisors to be supervised
     children = [
+      {Phoenix.PubSub, [name: WallEx.PubSub, adapter: Phoenix.PubSub.PG2]},
       # Start the endpoint when the application starts
       supervisor(WallExWeb.Endpoint, []),
+      WallExWeb.Telemetry,
       # Start your own worker by calling: WallEx.Worker.start_link(arg1, arg2, arg3)
       worker(WallEx.Worker, [])
     ]

@@ -18,7 +18,9 @@ defmodule WallExWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    live_dashboard "/dashboard"
+    live_dashboard "/dashboard",
+                   allow_destructive_actions: true,
+                   metrics: WallExWeb.Telemetry
   end
 
   # Other scopes may use custom stacks.

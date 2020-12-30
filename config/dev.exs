@@ -10,6 +10,7 @@ config :wall_ex, WallExWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
+  pubsub_server: WallEx.PubSub,
   check_origin: false,
   watchers: [
     node: [
