@@ -45,7 +45,7 @@ defmodule WallEx.Mixfile do
       {:plug, "~> 1.7"},
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 0.5.1", only: [:dev], runtime: false},
-      {:ex2ms, "~> 1.5"}
+      {:ex2ms, "~> 1.6.1"}
     ]
   end
 end
